@@ -6,6 +6,7 @@
 
 from ps1_partition import get_partitions
 import time
+import copy
 
 #================================
 # Part A: Transporting Space Cows
@@ -29,13 +30,13 @@ def load_cows(filename):
     for line in cows_file:
         line = line.rstrip()
         key_value = line.split(',')
-        print(line, key_value)
         cows[key_value[0]] = key_value[1]
     cows_file.close()
 
     return cows
 
-print(load_cows('ps1_cow_data.txt'))
+cows = load_cows('ps1_cow_data.txt')
+print(cows)
 
 # Problem 2
 def greedy_cow_transport(cows,limit=10):
@@ -60,8 +61,48 @@ def greedy_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
-    pass
+
+    # make a copy of input dict sorted by weight value
+    # cows_to_be_xported = dict(sorted(cows.items(), key=lambda item: item[1], reverse=True))
+    cows_to_be_xported = {k: int(v) for k, v in sorted(cows.items(), key=lambda x: x[1], reverse=True)}
+
+    results = []
+    # while loop if any elements in dict < limit
+
+    while any(v < limit for k, v in cows_to_be_xported.items()):
+        current_limit = limit
+        current_result = []
+        for e in cows_to_be_xported:
+            if cows_to_be_xported[e] <= current_limit:
+                current_limit -= cows_to_be_xported[e]
+                current_result.append(e)
+                del cows_to_be_xported[e]
+        
+        results.append(current_result)
+        print(results)
+
+
+    print(results)
+        # reset current loop limit
+
+    #  nested while loop if any elements in dict < current limit
+    #       find largest, remove it from dict
+
+    # append list into results list
+
+    # for e in cows_to_be_xported:
+    #     print(e, cows_to_be_xported[e])
+    #     if cows_to_be_xported[e] <= limit:
+
+
+
+
+    # sorted_cows = {k: v for k, v in sorted(cows_to_be_xported.items(), key=lambda item: item[1])}
+
+    # if cows remain that are under the spaceship limit, repeat the process
+
+
+greedy_cow_transport(cows,limit=10)
 
 # Problem 3
 def brute_force_cow_transport(cows,limit=10):
