@@ -36,7 +36,6 @@ def load_cows(filename):
     return cows
 
 cows = load_cows('ps1_cow_data.txt')
-print(cows)
 
 # Problem 2
 def greedy_cow_transport(cows,limit=10):
@@ -61,45 +60,38 @@ def greedy_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
+    # make a list of tuples from input dict sorted by weight descending
+    cows_to_be_xported = [(k, int(v)) for k, v in sorted(cows.items(), key=lambda x: x[1], reverse=True)]
 
-    # make a copy of input dict sorted by weight value
-    # cows_to_be_xported = dict(sorted(cows.items(), key=lambda item: item[1], reverse=True))
-    cows_to_be_xported = {k: int(v) for k, v in sorted(cows.items(), key=lambda x: x[1], reverse=True)}
-
+    # instantiate results list (of lists)
     results = []
-    # while loop if any elements in dict < limit
 
-    while any(v < limit for k, v in cows_to_be_xported.items()):
-        current_limit = limit
-        current_result = []
-        for e in cows_to_be_xported:
-            if cows_to_be_xported[e] <= current_limit:
-                current_limit -= cows_to_be_xported[e]
-                current_result.append(e)
-                del cows_to_be_xported[e]
-        
-        results.append(current_result)
-        print(results)
+    # while loop until there are no more cows below overall weight limit
+    while any(v < limit for (k, v) in cows_to_be_xported):
 
+        current_limit = limit # current trip weight limit
 
-    print(results)
-        # reset current loop limit
+        current_manifest = [] # current trip manifest
 
-    #  nested while loop if any elements in dict < current limit
-    #       find largest, remove it from dict
+        cows_to_remove = [] # indices of cows that have already been transported
 
-    # append list into results list
+        # add cows to current trip if they fit, in order of heaviest to lightest
+        for i in range(len(cows_to_be_xported)):
+            (cow, name, weight) = (cows_to_be_xported[i], cows_to_be_xported[i][0], cows_to_be_xported[i][1]) # semantic variable name options
 
-    # for e in cows_to_be_xported:
-    #     print(e, cows_to_be_xported[e])
-    #     if cows_to_be_xported[e] <= limit:
+            if weight < current_limit:
+                current_limit -= weight # adjust current trip limit for added cow
+                current_manifest.append(name) # add cow to flight manifest
+                cows_to_remove.append(i) # store index to remove after iteration is over
+
+        results.append(current_manifest)
+        print(results, cows_to_remove)
+        print(cows_to_be_xported)
+        for e in sorted(cows_to_remove, reverse=True):
+            cows_to_be_xported.pop(e)
 
 
-
-
-    # sorted_cows = {k: v for k, v in sorted(cows_to_be_xported.items(), key=lambda item: item[1])}
-
-    # if cows remain that are under the spaceship limit, repeat the process
+    return results
 
 
 greedy_cow_transport(cows,limit=10)
