@@ -7,6 +7,7 @@
 from ps1_partition import get_partitions
 import time
 import copy
+from datetime import timedelta
 
 #================================
 # Part A: Transporting Space Cows
@@ -92,8 +93,6 @@ def greedy_cow_transport(cows,limit=10):
     return results
 
 
-greedy_cow_transport(cows,limit=10)
-
 # Problem 3
 def brute_force_cow_transport(cows,limit=10):
     """
@@ -116,8 +115,47 @@ def brute_force_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
-    pass
+
+    # convert to list of tuples to feed into get_partitions
+    cows_to_be_combined = [(k, int(v)) for k, v in cows.items()]
+
+    combinations = []
+    for partition in get_partitions(cows_to_be_combined):
+        combinations.append(partition)
+
+    to_be_removed = []
+
+    # iterate over combinations and throw out those above weight limit
+    for i in range(len(combinations)):
+        partition = combinations[i]
+        for crew in partition:
+            total = 0
+            for cow in crew:
+                total += cow[1]
+            if total > limit:
+                to_be_removed.append(i)
+
+    # remove duplicates from to_be_removed list
+    to_be_removed = sorted(list(set(to_be_removed)), reverse=True)
+
+    for e in to_be_removed:
+        combinations.pop(e)
+
+    # iterate over remaining to find which has the lowest amount of trips (length)
+    least_trips_itinerary = (min(combinations, key=len))
+
+    # strip tuple down to just string of cow name, but retain/rebuild list of lists structure
+    result = []
+    for trip in least_trips_itinerary:
+        flight = []
+        for t in trip:
+            flight.append(t[0])
+        result.append(flight)
+
+    return result
+
+
+
 
 # Problem 4
 def compare_cow_transport_algorithms():
@@ -133,5 +171,17 @@ def compare_cow_transport_algorithms():
     Returns:
     Does not return anything.
     """
-    # TODO: Your code here
-    pass
+    start_greedy = time.monotonic()
+    greedy_tripcount = len(greedy_cow_transport(cows))
+    end_greedy = time.monotonic()
+    print("Greedy Trip Count:", greedy_tripcount, 'Runtime in seconds:', timedelta(seconds= end_greedy - start_greedy))
+
+    start_brute = time.monotonic()
+    brute_tripcount = len(brute_force_cow_transport(cows))
+    end_brute = time.monotonic()
+    print("Brute Force Trip Count:", brute_tripcount, 'Runtime in seconds:', timedelta(seconds= end_brute - start_brute))
+
+
+
+
+compare_cow_transport_algorithms()
