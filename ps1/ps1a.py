@@ -85,11 +85,9 @@ def greedy_cow_transport(cows,limit=10):
                 cows_to_remove.append(i) # store index to remove after iteration is over
 
         results.append(current_manifest)
-        print(results, cows_to_remove)
-        print(cows_to_be_xported)
-        for e in sorted(cows_to_remove, reverse=True):
-            cows_to_be_xported.pop(e)
 
+        for e in sorted(cows_to_remove, reverse=True): #remove largest indices first to not shuffle list
+            cows_to_be_xported.pop(e)
 
     return results
 
