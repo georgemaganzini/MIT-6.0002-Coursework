@@ -1,0 +1,5 @@
+1. The greedy algorithm runs much faster than the brute force algorithm because its time complexity is exponential (versus the brute force's factorial complexity).
+
+2. The greedy algorithm does not return an optimal answer because it only operates on the local scale, and this problem does not have optimal substructure. That is, the optimal solution can only be solved from the global scope, not local scope.
+
+3. The brute force algorithm returns the optimal solution because it exhastively attempts every combination and then chooses the optimal one.
