@@ -10,6 +10,6 @@ Problem B notes:
 
 1. A brute force algorithm would be difficult for this problem because it is exponential in nature since we can only find the optimal solution by checking every possible combination.
 
-2. A simple greedy algorithm for this problem would have an objective function of fiding the least amount of eggs that would meet the constraints of the weight requirement. It would most likely use integer division to try to fit as many of the heaviest value eggs as possible without going over the limit, then repeat the process all the way down to the lowest weight egg.
+2. A simple greedy algorithm for this problem would have an objective function of fiding the least amount of eggs that would meet the constraints of the weight requirement for the subproblems. It would most likely use integer division to try to fit as many of the heaviest value eggs as possible without going over the limit, then repeat the process all the way down to the lowest weight egg.
 
 3. A greedy algorithm will not always return an optimal solution. Example would be if we had egg_weights of [1, 30, 60, 75] and a target_weight of 90. The greedy algorithm would "fit" in one 75lb egg, and then 15 1lb eggs for a total of 16 eggs. We would need a smarter algorithm to skip over taking a 75lb egg and simply take 1 30lb and 1 60lb egg for a total of 2 eggs.

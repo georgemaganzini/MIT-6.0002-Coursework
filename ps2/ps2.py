@@ -20,7 +20,8 @@ from graph import Digraph, Node, WeightedEdge
 # represented?
 #
 # Answer:
-#
+# Graph nodes represent buildings on the MIT campus, the edges represent paths between the buildings.
+# Distances are represented within the WeightedEdge object, which holds both the total_distance as well as the outdoor_distance
 
 
 # Problem 2b: Implementing load_map
