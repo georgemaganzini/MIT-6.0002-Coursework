@@ -74,7 +74,7 @@ def load_map(map_filename):
 # What is the objective function for this problem? What are the constraints?
 #
 # Answer:
-#
+# Find the shortest path in distance with the contraint that the maximium distance traveled outdoors must be below a given parameter.
 
 # Problem 3b: Implement get_best_path
 def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
@@ -111,8 +111,19 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         If there exists no path that satisfies max_total_dist and
         max_dist_outdoors constraints, then return None.
     """
-    # TODO
-    pass
+    if not digraph.has_node(start) or not digraph.has_node(end):
+        raise ValueError('Node not in graph')
+    elif start == end:
+        if path < best_path:
+            best_path = path[0]
+            best_dist = path[1]
+        return (best_path, best_dist)
+    else:
+    #     for all the child nodes of start
+    #         construct a path including that node
+    #         recursively solve the rest of the path, from the child node to the end node
+        get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist, best_path)
+    return None
 
 
 # Problem 3c: Implement directed_dfs
