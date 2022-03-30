@@ -63,8 +63,10 @@ def load_map(map_filename):
 # Problem 2c: Testing load_map
 # Include the lines used to test load_map below, but comment them out
 
+# g = load_map("test_load_map.txt")
+# print(g)
 
-#
+
 # Problem 3: Finding the Shorest Path using Optimized Search Method
 #
 # Problem 3a: Objective function
