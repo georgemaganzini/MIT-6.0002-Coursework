@@ -111,11 +111,11 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         If there exists no path that satisfies max_total_dist and
         max_dist_outdoors constraints, then return None.
     """
-    path = path[0] + [start]
+    path[0].append(start)
     if not digraph.has_node(start) or not digraph.has_node(end):
         raise ValueError('Node not in graph')
     elif start == end:
-        if path[1] < best_path[1] and path[2] <= max_dist_outdoors:
+        if path[1] < best_dist and path[2] <= max_dist_outdoors:
             best_path = path[0]
             best_dist = path[1]
         return (best_path, best_dist)
@@ -124,9 +124,9 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         for edge in digraph.get_edges_for_node(start): # list of edges
     #         construct a path including that node
             node = edge.get_destination()
-            if node not in path:
-                path[1] += edge.get_total_distance()
-                path[2] += edge.get_outdoor_distance()
+            if node not in path[0]:
+                path[1] = path[1] + int(edge.get_total_distance())
+                path[2] = path[2] + int(edge.get_outdoor_distance())
                 start = node
     #         recursively solve the rest of the path, from the child node to the end node
                 return get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist, [])
@@ -164,10 +164,11 @@ def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
         max_dist_outdoors constraints, then raises a ValueError.
     """
     results = get_best_path(digraph, start, end, [[], 0, 0], max_dist_outdoors, 999999, [[], 999999, max_dist_outdoors])
-    if results[1] > max_total_dist:
-        raise ValueError("No path within constraints")
+    if type(results) is int:
+        if results[1] <= max_total_dist:
+            return results[0]
     else:
-        return results[0]
+        raise ValueError("No path within constraints")
 
 
 # ================================================================
